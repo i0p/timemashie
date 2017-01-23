@@ -82,12 +82,18 @@ LNKDST="Latest"
 #checkmountpoint "$BACKUPDIR"
 
 mkNoSouchDir "$PREFBCK/$DATE"
+
 BACKUPFILELOG="$PREFBCK/$DATE/.Backup.log"
 
 backupLog "$BACKUPFILELOG"
 checkSize "$1" "$BACKUPFILELOG"
 
+# ------  синхронизация катлогов !!!
+
 rsync -av --link-dest="$PWD/$PREFBCK/$LNKDST/" "$1" "$BCK" --log-file="$BACKUPFILELOG" --delete
+
+# ------ финал: замена цели в simlink
+
 updatelink "$PREFBCK/$LNKDST"
 
 #echo "LINKDST: $PREFBCK/$LNKDST"
