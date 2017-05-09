@@ -107,9 +107,9 @@ fi
 
 # установка основных путей
 SRC="$1"
-[ -z "$2" ] && bckp_pref="Backups.backupdb"
+#[ -z "$2" ] && bckp_pref="Backups.backupdb"
+bckp_pref=${2:-"Backups.backupdb"} # так тоже можно
 #BACKUPDIR=${2:-"Backups.backupdb"} # так тоже можно
-
 BACKUPNAME="$( basename $1 )"
 
 BACKSUFF="bckp"
@@ -117,11 +117,12 @@ BACKSUFF="bckp"
 checkSouchPath $1
 
 
-backup_dest="${bckp_pref}/${BACKUPNAME}.${BACKSUFF}" # установка MAIN каталога для размещения копии файлов
+backup_dest="${bckp_pref%/}/${BACKUPNAME}.${BACKSUFF}" # установка MAIN каталога для размещения копии файлов
 
 DATE=`date +%F.%H%M%S`
 
 cur_backup_dest="${backup_dest}/${DATE}" 				#  каталог для размещения будующего backup
+
 
 LNKDST="Latest"
 
@@ -129,6 +130,7 @@ LNKDST="Latest"
 #checkmountpoint "$BACKUPDIR"
 
 #mkNoSouchDir "${PREFBCK}/${DATE}"
+
 mkNoSouchDir "${cur_backup_dest}"
 BACKUPFILELOG="${cur_backup_dest}/.Backup.log"
 
