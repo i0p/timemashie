@@ -109,12 +109,11 @@ fi
 SRC="$1"
 #[ -z "$2" ] && bckp_pref="Backups.backupdb"
 bckp_pref=${2:-"Backups.backupdb"} # так тоже можно
-#BACKUPDIR=${2:-"Backups.backupdb"} # так тоже можно
 BACKUPNAME="$( basename $1 )"
 
 BACKSUFF="bckp"
 
-checkSouchPath $1
+checkSouchPath $SRC
 
 
 backup_dest="${bckp_pref%/}/${BACKUPNAME}.${BACKSUFF}" # установка MAIN каталога для размещения копии файлов
@@ -140,12 +139,13 @@ checkSize "$1" "$BACKUPFILELOG"
 echo "root dir: ${backup_dest}"
 
 # ------  синхронизация катлогов !!!
-rsync -a --link-dest="$PWD/${backup_dest}/$LNKDST" "$1" "${cur_backup_dest}/" --log-file="$BACKUPFILELOG" --delete
+rsync -a --link-dest="../$LNKDST" "$1" "${cur_backup_dest}/" --log-file="$BACKUPFILELOG" --delete
 
 # ------ финал: замена цели в simlink
 
-updatelink "$PWD/${backup_dest}"
+updatelink "${backup_dest}"
 
+echo "${backup_dest}"
 #echo "LINKDST: $PREFBCK/$LNKDST"
 #echo "DST: $PREFBCK/$DATE"
 
